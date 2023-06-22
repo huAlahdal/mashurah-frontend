@@ -1,0 +1,15 @@
+
+<svg width="576" height="512" xmlns="http://www.w3.org/2000/svg" class="svg-inline--fa fa-hand-holding-usd fa-w-18">
+
+ <g>
+  <title>background</title>
+  <rect fill="none" id="canvas_background" height="402" width="582" y="-1" x="-1"/>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <path id="svg_1" d="m330.11,33.72zm235.16,294.38c-11.8,-10.7 -30.2,-10 -42.6,0l-92.4,73.9a63.64,63.64 0 0 1 -40,14l-118.27,0a16,16 0 0 1 0,-32l78.29,0c15.9,0 30.71,-10.9 33.25,-26.6a31.2,31.2 0 0 0 0.46,-5.46a32,32 0 0 0 -32,-31.94l-160,0a117.66,117.66 0 0 0 -74.1,26.29l-46.5,37.71l-55.4,0a16,16 0 0 0 -16,16l0,96a16,16 0 0 0 16,16l356.77,0a64,64 0 0 0 40,-14l151.23,-121a32,32 0 0 0 1.28,-48.9l-0.01,0z" fill="#14cab4"/>
+  <ellipse stroke="null" ry="58.568867" rx="59.310246" id="svg_3" cy="235.004477" cx="204.809946" fill-opacity="null" stroke-opacity="null" stroke-width="null" fill="#14cab4"/>
+  <ellipse stroke="null" ry="91.343807" rx="92.500057" id="svg_4" cy="186.399709" cx="400.931593" fill-opacity="null" stroke-opacity="null" stroke-width="null" fill="#14cab4"/>
+  <ellipse stroke="null" ry="49.204594" rx="49.827437" id="svg_5" cy="62.47131" cx="284.120677" fill-opacity="null" stroke-opacity="null" stroke-width="null" fill="#14cab4"/>
+ </g>
+</svg>

@@ -1,0 +1,783 @@
+<ngx-spinner></ngx-spinner>
+<header class="main_menu home_menu">
+  <div class="row align-items-center">
+    <div class="col-lg-12">
+      <nav class="navbar navbar-expand-lg navbar-light">
+        <a routerLink="/">
+          <picture>
+            <source media="(min-width: 700px)" srcset="assets/img/logo-4.png" />
+            <img class="logo" src="assets/img/logo-4.png" />
+          </picture>
+        </a>
+        <button
+          style="color: white;"
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+          onclick="mobileme()"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div
+          class="navbar-collapse main-menu-item justify-content-end collapse"
+          id="navbarSupportedContent"
+        >
+          <ul class="navbar-nav align-items-center">
+            <li class="nav-item">
+              <a
+                [routerLinkActiveOptions]="{ exact: true }"
+                class="nav-link"
+                routerLink="/"
+                routerLinkActive="active"
+                onclick="mobileme()"
+                >الرئيسية</a>
+            </li>
+
+            <li class="nav-item">
+              <a onclick="mobileme()" class="nav-link" routerLink="about_us" routerLinkActive="active">من نحن</a>
+            </li>
+
+            <li class="nav-item">
+              <a onclick="mobileme()" class="nav-link" routerLink="news" routerLinkActive="active">المدونة</a>
+            </li>
+
+            <li class="nav-item">
+              <a onclick="mobileme()" class="nav-link" routerLink="/services" routerLinkActive="active"
+                >الخدمات القانونية</a
+              >
+            </li>
+
+            <li *ngIf="isLoggedIn" class="nav-item">
+              <a onclick="mobileme()" class="nav-link" routerLink="/myorders" routerLinkActive="active">طلباتي</a>
+            </li>
+
+            <li *ngIf="isLoggedIn" class="nav-item">
+              <a onclick="mobileme()" class="nav-link" routerLink="userInfo" routerLinkActive="active">حسابي</a>
+            </li>
+
+            <!-- <li *ngIf="isLoggedIn && admin" class="nav-item">
+              <a
+                (click)="onActivate()"
+                class="nav-link"
+                routerLink="/orders"
+                routerLinkActive="active"
+                >الطلبات</a
+              >
+            </li> -->
+
+            <li *ngIf="!isLoggedIn" class="d-lg-block">
+              <a
+                onclick="mobileme()"
+                (click)="openModal(Login)"
+                class="btn_2"
+                style="margin: 10px 20px 10px 20px;"
+                routerLinkActive="active"
+                >تسجيل الدخول</a
+              >
+            </li>
+
+            <li *ngIf="isLoggedIn" class="nav-item">
+              <a
+                onclick="mobileme()"
+                style="color: white; background-color: #1A2431; margin: 10px 10px 10px 10px;"
+                class="btn_3"
+                (click)="signout()"
+                >تسجيل الخروج</a
+              >
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<!-- Login Modal -->
+<ng-template #Login>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h1 class="modal-title w-100" id="myModalLabel" style="color: #14cab4; text-align: center;">
+        تسجيل الدخول
+      </h1>
+      <button
+        (click)="modalRef.hide()"
+        type="button"
+        #closebutton
+        class="close"
+        data-dismiss="modal"
+        aria-label="Close"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body" style="text-align: right;">
+      <div class="alert alert-danger" *ngIf="error">
+        <p style="color: red;">{{ error }}</p>
+      </div>
+
+      <form [formGroup]="signIn" (ngSubmit)="signInSubmit(VerifySMS)">
+        <div class="row">
+          <div class="col-md-6">
+            <label for="username"><b>البريد الإلكتروني</b></label>
+            <input type="email" formControlName="email" placeholder="Email" required email style="width: 100%;" />
+          </div>
+          <div class="col-md-6">
+            <label for="password"><b>كلمة المرور</b></label>
+            <input
+              type="password"
+              formControlName="password"
+              placeholder="Password"
+              autocomplete="current-password"
+              required
+              style="width: 100%;"
+            />
+          </div>
+          <div class="col-md-12">
+            <button type="submit" class="btn_6" [disabled]="!signIn.valid">
+              الدخول
+            </button>
+
+            <a (click)="closeModal(); openModal(Register)" data-dismiss="modal" class="btn_7"
+              >تسجيل جديد</a
+            >
+            <a class="btn_7" (click)="closeModal(); openModal(forgotPassword)">نسيت كلمة المرور</a>
+          </div>
+        </div>
+      </form>
+    </div>
+    
+  </div>
+</ng-template>
+<!-- Register Modal -->
+<ng-template #Register>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h1 class="modal-title w-100" id="myModalLabel" style="color: #14cab4; text-align: center;">
+        تسجيل مستخدم جديد
+      </h1>
+      <button
+        (click)="modalRef.hide()"
+        #closebuttonReg
+        type="button"
+        class="close"
+        data-dismiss="modal"
+        aria-label="Close"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <button
+        #Smsbutton
+        data-toggle="modal"
+        data-target="#verifysmscode-Model"
+        data-dismiss="modal"
+        style="display: none;"
+      ></button>
+    </div>
+    <div class="modal-body" style="text-align: right;">
+      <div class="alert alert-danger" *ngIf="error">
+        <p style="color: red;">{{ error }}</p>
+      </div>
+      <ngx-spinner></ngx-spinner>
+      <form [formGroup]="signUp" (ngSubmit)="signUpSubmit(VerifySMS, lawyerApprov)">
+        <div class="row">
+          <input type="text" name="account_type" id="radio_up" style="display: none; width: 100%;" />
+
+          <div class="col-md-6">
+            <label><b>نوع الحساب</b></label>
+            <select
+              class="form-control"
+              formControlName="accountType"
+              (change)="onChangedEvent($event.target.value)"
+              style="width: 100%;"
+            >
+              <option>حساب مستخدم</option>
+              <option>حساب محامي</option>
+            </select>
+          </div>
+
+          <div class="col-md-6">
+            <label [hidden]="signUpf.value.accountType === 'حساب محامي'"><b>نوع الحساب</b></label>
+            <select
+              [disabled]="signUpf.value.accountType === 'حساب محامي'"
+              [hidden]="signUpf.value.accountType === 'حساب محامي'"
+              class="form-control"
+              id="exampleFormControlSelect1"
+              (change)="onChangedEvent($event.target.value)"
+              style="width: 100%;"
+            >
+              <option>فرد</option>
+              <option>شركة</option>
+            </select>
+          </div>
+
+          <div *ngIf="!signUpf.controls.comapanyName.disabled" class="col-md-12">
+            <label><b>اسم الشركة</b></label>
+            <input
+              style="width: 85%;"
+              type="text"
+              formControlName="comapanyName"
+              placeholder="اسم الشركة"
+              style="width: 100%;"
+            />
+          </div>
+
+          <div class="col-md-6">
+            <label for="first_name"><b>الاسم الأول</b></label>
+            <input type="text" formControlName="firstName" placeholder="الاسم الأول" required style="width: 100%;" />
+          </div>
+          <div class="col-md-6">
+            <label for="last_name"><b>الاسم الأخير</b></label>
+            <input type="text" formControlName="lastName" placeholder="الاسم الأخير" required style="width: 100%;" />
+          </div>
+          <div class="col-md-6">
+            <label for="username"><b>البريد الالكتروني</b></label>
+            <input
+              type="email"
+              formControlName="email"
+              placeholder="البريد الالكتروني"
+              required
+              email
+              style="width: 100%;"
+            />
+          </div>
+          <div class="col-md-6">
+            <label for="password"
+              ><b>كلمة المرور الجديدة</b>
+              <a style="color: red;">(يجب ان تكون من ٦ خانات على الأقل)</a></label
+            >
+            <input
+              type="password"
+              formControlName="password"
+              placeholder="كلة المرور"
+              autocomplete="current-password"
+              required
+              minlength="6"
+              style="width: 100%;"
+            />
+          </div>
+          <div class="col-md-6">
+            <label for="mobile"><b>الجوال</b></label>
+            <input type="text" formControlName="mobile" placeholder="الجوال" required style="width: 100%;"/>
+          </div>
+          <div class="col-md-6">
+            <label for="country"><b>الدولة</b></label>
+            <select name="country" style="width: 100%;">
+              <option value="المملكة العربية السعودية">المملكة العربية السعودية</option>
+            </select>
+          </div>
+          <div class="col-md-12">
+            <label class="conChx">
+              <input
+                formControlName="checkbox"
+                type="checkbox"
+                name="terms"
+                id="termsAcc"
+                required
+                style="width: 100%;"
+              />
+              <span class="checkmark"></span>
+              <p style="padding-right: 40px;">اوافق على الشروط والأحكام</p>
+            </label>
+
+            <button type="submit" class="btn_6" id="signUpBtn">تسجيل جديد</button>
+
+            <a (click)="closeModal(); openModal(Login)" class="btn_7">الدخول</a>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</ng-template>
+
+<!-- forgot Password-->
+<ng-template #forgotPassword>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h1 class="modal-title w-100" id="myModalLabel" style="color: #14cab4; text-align: center;">
+        نسيت كلمة المرور
+      </h1>
+      <button
+        (click)="modalRef.hide()"
+        type="button"
+        #closebutton
+        class="close"
+        data-dismiss="modal"
+        aria-label="Close"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body" style="text-align: right;">
+      <div class="alert alert-danger" *ngIf="error">
+        <p style="color: red;">{{ error }}</p>
+      </div>
+      <form
+        [formGroup]="forgotpassword"
+        (ngSubmit)="ForgotPasswordF(VerifySMSPass)"
+        *ngIf="!isLoading"
+      >
+        <div class="row">
+          <div class="col-md-12">
+            <label for="password"><b>البريد الإلكتروني</b> </label>
+            <input type="email" formControlName="email" placeholder="Email" required email style="width: 100%;"/>
+          </div>
+          <div class="col-md-12">
+            <div id="incorrectPassword"></div>
+            <button
+              data-toggle="modal"
+              data-target="#verifyforgotpassword-Model"
+              data-dismiss="modal"
+              type="submit"
+              class="btn_6"
+              [disabled]="!forgotpassword.valid"
+            >
+              ارسل الى بريدي المسجل
+            </button>
+
+            <a data-toggle="modal" data-target="#login-Model" data-dismiss="modal" class="btn_7"
+              >الدخول</a
+            >
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</ng-template>
+
+<!-- <div
+  class="modal fade"
+  id="forgotPassword-Model"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="forgotPassword"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title w-100" id="myModalLabel" style="color: #14cab4; text-align: center;">
+          نسيت كلمة المرور
+        </h1>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="text-align: right;">
+        <div class="alert alert-danger" *ngIf="error">
+          <p style="color: red;">{{ error }}</p>
+        </div>
+
+        <form [formGroup]="forgotpassword" (ngSubmit)="ForgotPasswordF()" *ngIf="!isLoading">
+          <div class="row">
+            <div class="col-md-12">
+              <label for="password"><b>البريد الإلكتروني</b> </label>
+              <input type="email" formControlName="email" placeholder="Email" required email />
+            </div>
+            <div class="col-md-12">
+              <div id="incorrectPassword"></div>
+              <button
+                data-toggle="modal"
+                data-target="#verifyforgotpassword-Model"
+                data-dismiss="modal"
+                type="submit"
+                class="btn_6"
+                [disabled]="!forgotpassword.valid"
+              >
+                ارسل الى بريدي المسجل
+              </button>
+
+              <a data-toggle="modal" data-target="#login-Model" data-dismiss="modal" class="btn_7"
+                >الدخول</a
+              >
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<!-- Verify Forgot Password-->
+<!-- <div
+  class="modal fade"
+  id="verifyforgotpassword-Model"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="forgotPassword"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title w-100" id="myModalLabel" style="color: #14cab4; text-align: center;">
+          كود التأكيد
+        </h1>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="text-align: right;">
+        <div class="alert alert-danger" *ngIf="error">
+          <p style="color: red;">{{ error }}</p>
+        </div>
+        <div style="text-align: center;" *ngIf="isLoading">
+          <app-loading-spinner></app-loading-spinner>
+        </div>
+        <form
+          [formGroup]="verifyforgotpassword"
+          (ngSubmit)="VerifiyForgotPasswordF()"
+          *ngIf="!isLoading"
+        >
+          <div class="row">
+            <div class="col-md-12">
+              <label for="password"><b>كود تأكيد رقم الجوال</b> </label>
+              <input name="email" placeholder="رمز التأكيد" formControlName="code" required />
+            </div>
+            <div class="col-md-12">
+              <div id="incorrectPassword"></div>
+              <button type="submit" class="btn_6" [disabled]="!verifyforgotpassword.valid">
+                تأكيد
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<!-- Change Password -->
+<!-- <div
+  class="modal fade"
+  id="changepassword-Model"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="forgotPassword"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title w-100" id="myModalLabel" style="color: #14cab4; text-align: center;">
+          تغير كلمة المرور
+        </h1>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="text-align: right;">
+        <div class="alert alert-danger" *ngIf="error">
+          <p style="color: red;">{{ error }}</p>
+        </div>
+        <div style="text-align: center;" *ngIf="isLoading">
+          <app-loading-spinner></app-loading-spinner>
+        </div>
+        <form [formGroup]="changepassword" (ngSubmit)="ChangePasswordF()" *ngIf="!isLoading">
+          <div class="row">
+            <div class="col-md-6">
+              <label for="password"><b>كلمة المرور القديمة</b> </label>
+              <input
+                name="password"
+                placeholder="password"
+                formControlName="oldPassword"
+                required
+              />
+            </div>
+            <div class="col-md-6">
+              <label for="password"><b> كلمة المرور الجديدة</b> </label>
+              <input
+                name="repassword"
+                placeholder="repassword"
+                formControlName="newPassword"
+                required
+              />
+            </div>
+            <div class="col-md-12">
+              <div id="incorrectPassword"></div>
+              <button type="submit" class="btn_6">تغير كلمة المرور</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<!-- Verify SMS Code-->
+
+<ng-template #VerifySMS>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h1 class="modal-title w-100" id="myModalLabel" style="color: #14cab4; text-align: center;">
+        كود التأكيد
+      </h1>
+      <button
+        (click)="modalRef.hide()"
+        type="button"
+        #closebutton
+        class="close"
+        data-dismiss="modal"
+        aria-label="Close"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body" style="text-align: right;">
+      <div class="alert alert-danger" *ngIf="error">
+        <p style="color: red;">{{ error }}</p>
+      </div>
+      <div style="text-align: center;" *ngIf="isLoading">
+        <app-loading-spinner></app-loading-spinner>
+      </div>
+      <form [formGroup]="verifySMScode" (ngSubmit)="VerifiySMSCodeF()" *ngIf="!isLoading">
+        <div class="row">
+          <div class="col-md-12">
+            <label for="password"><b>كود تأكيد رقم الجوال</b> </label>
+            <input name="email" placeholder="رمز التأكيد" formControlName="code" required style="width: 100%;"/>
+          </div>
+          <div class="col-md-12">
+            <div id="incorrectPassword"></div>
+            <button
+              style="margin: 0 15px;"
+              type="submit"
+              class="btn_6"
+              [disabled]="!verifySMScode.valid"
+            >
+              تأكيد
+            </button>
+            <button style="margin: 0 15px;" type="button" class="btn_6" (click)="SendSMSCode()">
+              اعادة ارسال رمز التأكيد
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</ng-template>
+
+<!-- Verify SMS Code for password-->
+
+<ng-template #VerifySMSPass>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h1 class="modal-title w-100" id="myModalLabel" style="color: #14cab4; text-align: center;">
+        كود التأكيد
+      </h1>
+      <button
+        (click)="modalRef.hide()"
+        type="button"
+        #closebutton
+        class="close"
+        data-dismiss="modal"
+        aria-label="Close"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body" style="text-align: right;">
+      <div class="alert alert-danger" *ngIf="error">
+        <p style="color: red;">{{ error }}</p>
+      </div>
+      <div style="text-align: center;" *ngIf="isLoading">
+        <app-loading-spinner></app-loading-spinner>
+      </div>
+      <form
+        [formGroup]="verifySMScode"
+        (ngSubmit)="VerifiyForgotPasswordF(ChangeSMSPass)"
+        *ngIf="!isLoading"
+      >
+        <div class="row">
+          <div class="col-md-12">
+            <label for="password"><b>كود تأكيد رقم الجوال</b> </label>
+            <input name="email" placeholder="رمز التأكيد" formControlName="code" required style="width: 100%;"/>
+          </div>
+          <div class="col-md-12">
+            <div id="incorrectPassword"></div>
+            <button
+              style="margin: 0 15px;"
+              type="submit"
+              class="btn_6"
+              [disabled]="!verifySMScode.valid"
+            >
+              تأكيد
+            </button>
+            <button
+              style="margin: 0 15px;"
+              type="button"
+              class="btn_6"
+              (click)="ForgotPasswordF(VerifySMSPass)"
+            >
+              اعادة ارسال رمز التأكيد
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</ng-template>
+
+<!-- Change SMS Code for password-->
+
+<ng-template #ChangeSMSPass>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h1 class="modal-title w-100" id="myModalLabel" style="color: #14cab4; text-align: center;">
+        تغير كلمة المرور
+      </h1>
+      <button
+        (click)="modalRef.hide()"
+        type="button"
+        #closebutton
+        class="close"
+        data-dismiss="modal"
+        aria-label="Close"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body" style="text-align: right;">
+      <div class="alert alert-danger" *ngIf="error">
+        <p style="color: red;">{{ error }}</p>
+      </div>
+      <div style="text-align: center;" *ngIf="isLoading">
+        <app-loading-spinner></app-loading-spinner>
+      </div>
+      <form
+        [formGroup]="verifyforgotpassword"
+        (ngSubmit)="ChangeForgotPasswordF()"
+        *ngIf="!isLoading"
+      >
+        <div class="col-md-6">
+          <label for="password"><b> كلمة المرور الجديدة</b> </label>
+          <input
+            name="repassword"
+            placeholder="repassword"
+            formControlName="newPassword"
+            required
+            style="width: 100%;"
+          />
+        </div>
+        <div class="col-md-12">
+          <div id="incorrectPassword"></div>
+          <button type="submit" class="btn_6">تغير كلمة المرور</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #lawyerApprov>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h1 class="modal-title w-100" id="myModalLabel" style="color: #14cab4; text-align: center;">
+        تفعيل الحساب
+      </h1>
+      <button
+        (click)="modalRef.hide()"
+        type="button"
+        #closebutton
+        class="close"
+        data-dismiss="modal"
+        aria-label="Close"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body" style="text-align: center;">
+      <div style="text-align: center;" *ngIf="isLoading">
+        <app-loading-spinner></app-loading-spinner>
+      </div>
+      <p style="text-align: right;">
+        لن يتم استقبال طلبات على هذا الحساب حتى يتم تفعيل الحساب من قبل إدارة الموقع
+      </p>
+      <hr />
+      <div class="col-md-12" style="text-align: center;"></div>
+      <button type="button" class="btn_6" (click)="closeModal(); openModal(VerifySMS)">
+        موافق
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #clientInfo>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h1 class="modal-title w-100" id="myModalLabel" style="color: #14cab4; text-align: center;">
+        معلومات الحساب
+      </h1>
+      <button
+        (click)="modalRef.hide()"
+        type="button"
+        #closebutton
+        class="close"
+        data-dismiss="modal"
+        aria-label="Close"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="alert alert-danger" *ngIf="error">
+          <p style="color: red;">{{ error }}</p>
+        </div>
+        <div style="text-align: center;" *ngIf="isLoading">
+          <app-loading-spinner></app-loading-spinner>
+        </div>
+        <form>
+          <div class="row">
+            <div class="col-md-6">
+              <label><b>الأسم</b> </label>
+              <input
+                name="userName"
+                [(ngModel)]="userInfo.name"
+                disabled
+                style="width: 100%;"
+              />
+            </div>
+            <div class="col-md-6">
+              <label><b> الإميل</b> </label>
+              <input
+                name="userEmail"
+                [(ngModel)]="userInfo.email"
+                disabled
+                style="width: 100%;"
+              />
+            </div>
+          </div>
+          <label><b>تغير رمز المرور</b> </label>
+          <div class="row">
+            <div class="col-md-6">
+              <input
+                name="oldPass"
+                type="password"
+                placeholder="الرمز القديم"
+                [(ngModel)]="changePass.oldPassword"
+                style="width: 100%;"
+              />
+            </div>
+            <div class="col-md-6">
+              <input
+                name="newPass"
+                type="password"
+                placeholder="الرمز الجديد"
+                [(ngModel)]="changePass.newPassword"
+                style="width: 100%;"
+              />
+            </div>
+          </div>
+          <div style="text-align: right;" class="col-md-12">
+            <button type="button" class="btn btn-primary" (click)='ChangePasswordF()'>تغير كلمة المرور</button>
+          </div>
+          <hr>
+          <div style="text-align: center;" class="col-md-12">
+            <button (click)='closeModal()' type="button" class="btn_6">إغلاق</button>
+          </div>
+        </form>
+    </div>
+  </div>
+</ng-template>

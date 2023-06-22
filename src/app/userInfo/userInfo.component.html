@@ -1,0 +1,67 @@
+<div id="app" class="page">
+  <form name="newReq">
+    <section class="application">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-9" style="margin: 0 auto;">
+            <div id="p1" class="app_box app">
+              <div class="alert alert-danger" *ngIf="error">
+                <p style="color: red;">{{ error }}</p>
+              </div>
+              <div>
+                <h2 style="text-align: center;">معلومات الحساب</h2>
+                <form>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <label><b>الأسم</b> </label>
+                      <input
+                        name="userName"
+                        [(ngModel)]="userInfo.name"
+                        disabled
+                        style="width: 100%;"
+                      />
+                    </div>
+                    <div class="col-md-6">
+                      <label><b> الإميل</b> </label>
+                      <input
+                        name="userEmail"
+                        [(ngModel)]="userInfo.email"
+                        disabled
+                        style="width: 100%;"
+                      />
+                    </div>
+                  </div>
+                  <label><b>تغير رمز المرور</b> </label>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <input
+                        name="oldPass"
+                        type="password"
+                        placeholder="الرمز القديم"
+                        [(ngModel)]="changePass.oldPassword"
+                        style="width: 100%;"
+                      />
+                    </div>
+                    <div class="col-md-6">
+                      <input
+                        name="newPass"
+                        type="password"
+                        placeholder="الرمز الجديد"
+                        [(ngModel)]="changePass.newPassword"
+                        style="width: 100%;"
+                      />
+                    </div>
+                  </div>
+
+                  <div style="text-align: right;" class="col-md-12">
+                    <button type="button" class="btn_6" (click)='ChangePasswordF()'>تغير كلمة المرور</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </form>
+</div>

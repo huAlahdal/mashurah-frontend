@@ -1,0 +1,41 @@
+<div id="p1" class="app_box app">
+    <div class="row">
+        <div class="col-md-6">
+            <h2>الملكية الفكرية</h2>
+            <select [(ngModel)] = 'service' style="width: 250px;">
+                <option value=1>بحث أولي بسيط (3 وثائق كحد أقصى)</option>
+                <option value=2>بحث أولي متقدم (3 وثائق على الأقل مع تقرير وتوصيات)</option>
+                <option value=3>صياغة الطلب وطني / خليجي ( بسيط) حد أقصى 5 صفحات</option>
+                <option value=4>صياغة طلب وطني أو خليجي (معقد)</option>
+                <option value=5>تقديم ومتابعة طلب دولي PCT حتى صدور تقرير- عربي</option>
+                <option value=6>تقديم ومتابعة طلب دولي PCT حتى صدور التقرير- انجليزي</option>
+                <option value=7>أي إجراء إضافي على الطلب الدولي PCT بعد التسجيل</option>
+                <option value=8>إيداع فقط طلب وطني بدون مراجعة الطلب</option>
+                <option value=9>إيداع فقط طلب خليجي بدون مراجعة الطلب</option>
+                <option value=10>إيداع الطلب الوطني مع المراجعة قبل الايداع</option>
+                <option value=11>إيداع الطلب خليجي مع المراجعة قبل الايداع</option>
+                <option value=12>إيداع طلب في دولة واحدة خارج المملكة</option>
+                <option value=13>عقود التراخيص / الفرنشايز /عقود تجارية بالعربي</option>
+                <option value=14>عقود التراخيص / الفرنشايز /عقود تجارية بالإنجليزي</option>
+                <option value=15>تسجيل علامة تجارية</option>
+                <option value=16>تسجيل مصنف أدبي او فني بمكتبة الملك فهد الوطنية</option>
+                <option value=17>الرد على تقرير الفحص الشكلي والتعديل</option>
+                <option value=18>الرد على تقرير الفحص الموضوعي فقط</option>
+                <option value=19>الرد على تقرير الفحص الموضوعي1أو2 مع إعادة الصياغة</option>
+                <option value=20>الوساطة لتوقيع أي عقد مع أي جهة حكومية أو شركات أو غيرها</option>
+            </select>
+            <h2>نوع الاستشارة</h2>
+            <select [(ngModel)] = 'urgent' style="width: 250px;" name="service_type">
+              <option value=1>مشروع لمرة واحدة</option>
+              <option value=2>مجرد استشارة</option>
+            </select>
+            <h2>الخدمة</h2>
+            <select [(ngModel)] = 'consType' style="width: 250px;">
+              <option [value]="arr.value" *ngFor = "let arr of array; let i = index">{{array[i].type}}</option>
+            </select>
+        </div>
+    </div>
+    <a class="btn_3" (click) = 'backClicked()' >السابق</a>
+    <div class="divider"></div>
+    <a class="btn_6" (click)='addData(consType)' routerLink = '/services/summery'>التالي</a>
+</div>

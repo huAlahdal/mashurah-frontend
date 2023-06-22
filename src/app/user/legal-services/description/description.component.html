@@ -1,0 +1,64 @@
+<ngx-spinner></ngx-spinner>
+
+<div *ngIf="isLoggedIn && !isLoading" id="p6" class="app_box app">
+  <div class="row">
+    <form>
+      <div class="col-md-12">
+        <h2>اوصف مشكلتك</h2>
+        <h3>يرجى كتابة مشكلتك القانونية بشكل مفصل:</h3>
+        <textarea required type="text" name="describe" [(ngModel)]="description"></textarea>
+      </div>
+    </form>
+    <div *ngIf="allData[summeryData.serviceName-1].type[summeryData.type-1].name != 'استشارة بدون مستندات'" class="col-md-12">
+      <h2>المرفقات</h2>
+    </div>
+    <div *ngIf="allData[summeryData.serviceName-1].type[summeryData.type-1].name != 'استشارة بدون مستندات'" class="col-md-6">
+      <h3>ملف 1</h3>
+      <p id="attach1Cap"></p>
+      <input type="file" (change)="onSelectFile($event)" style="width: 100%;"/>
+      <h3>ملف 2</h3>
+      <p id="attach2Cap"></p>
+      <input type="file" (change)="onSelectFile($event)" style="width: 100%;"/>
+    </div>
+    <div *ngIf="allData[summeryData.serviceName-1].type[summeryData.type-1].name != 'استشارة بدون مستندات'" class="col-md-6">
+      <h3>ملف 3</h3>
+      <p id="attach3Cap"></p>
+      <input type="file" (change)="onSelectFile($event)" style="width: 100%;"/>
+      <h3>ملف 4</h3>
+      <p id="attach4Cap"></p>
+      <input type="file" (change)="onSelectFile($event)" style="width: 100%;"/>
+    </div>
+  </div>
+  <div class="col-md-12" style="padding-top: 20px;">
+    <!-- <a class="btn_3" (click)="onSubmit()">الساasdsadsaبق</a> -->
+    <a class="btn_3" (click)="backClicked()">السابق</a>
+    <div class="divider"></div>
+    <a style="color: white;" class="btn_6" (click)="addnewOrder()">تم</a>
+  </div>
+</div>
+<div *ngIf="!isLoggedIn && !isLoading" id="p1" class="app_box app">
+  <div class="alert alert-danger" *ngIf="error && !isLoggedIn">
+    <p style="color: red;">{{ error }}</p>
+  </div>
+  <h2 style="text-align: center;">تسجيل الدخول</h2>
+  <form [formGroup]="signIn" (ngSubmit)="signInSubmit()">
+    <div class="row">
+      <div class="col-md-12">
+        <h2>البريد الإلكتروني</h2>
+        <input
+          type="email"
+          formControlName="email"
+          placeholder="البريد الإلكتروني"
+          required
+          email
+          style="width: 100%;"
+        />
+        <h2>كلمة المرور</h2>
+        <input type="password" formControlName="password" placeholder="كلمة المرور" required style="width: 100%;" />
+      </div>
+    </div>
+    <a class="btn_3" (click)="backClicked()">السابق</a>
+    <div class="divider"></div>
+    <button class="btn_6" [disabled]="!signIn.valid" type="submit">تسجيل الدخول</button>
+  </form>
+</div>

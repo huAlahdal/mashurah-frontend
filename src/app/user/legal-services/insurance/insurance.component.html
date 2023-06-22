@@ -1,0 +1,26 @@
+<div id="p1" class="app_box app">
+    <div class="row">
+        <div class="col-md-6">
+            <h2>التأمين</h2>
+            <select [(ngModel)] = 'service' style="width: 250px;">
+                <option value=1>التأمين الطبي</option>
+                <option value=2>تأمين الحرائق</option>
+                <option value=3>تأميـن الحوادث</option>
+                <option value=4>تآمين الممتلكات</option>
+                <option value=5>تأمين اخر</option>
+            </select>
+            <h2>نوع الاستشارة</h2>
+            <select [(ngModel)] = 'consType' style="width: 250px;" name="service_type">
+              <option [value]="arr.value" *ngFor = "let arr of array; let i = index">{{array[i].type}}</option>
+            </select>
+            <h2>الخدمة</h2>
+            <select [(ngModel)] = 'urgent' style="width: 250px;">
+              <option value=1>عادية</option>
+              <option value=2>مستعجلة</option>
+            </select>
+        </div>
+    </div>
+    <a class="btn_3" (click) = 'backClicked()' >السابق</a>
+    <div class="divider"></div>
+    <a class="btn_6" (click)='addData(consType)' routerLink = '/services/summery'>التالي</a>
+</div>

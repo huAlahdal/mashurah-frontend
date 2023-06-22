@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Mashurah</title>
+    <base href="/" />
+    <script>
+      function mobileme() {
+        var element = document.getElementById('navbarSupportedContent');
+        element.classList.toggle('collapse');
+        element.classList.toggle('show');
+      }
+    </script>
+    <script
+      src="https://bsf.gateway.mastercard.com/checkout/version/56/checkout.js"
+      data-error="errorCallback"
+      data-cancel="cancelCallback"
+      data-complete="completeCallback"
+      ;
+    ></script>
+    <script>
+      function errorCallback(error) {
+        console.log(error);
+      }
+      function cancelCallback() {
+        console.log('Payment Canceledd');
+      }
+
+      function completeCallback() {
+        window.angularComponentReference.zone.run(() => {
+          window.angularComponentReference.loadAngularFunction();
+        });
+      }
+      
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap"
+      rel="stylesheet"
+    />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  </head>
+  <body>
+    <app-root dir="rtl"></app-root>
+  </body>
+</html>

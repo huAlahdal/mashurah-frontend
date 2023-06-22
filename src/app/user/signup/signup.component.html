@@ -1,0 +1,52 @@
+<div id="app" class="page">
+  <form name="newReq">
+    <section class="application">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-9">
+            <div id="p1" class="app_box app">
+              <div style="text-align: center;" *ngIf="isLoading">
+                <app-loading-spinner></app-loading-spinner>
+              </div>
+              <div class="alert alert-danger" *ngIf="error && !isLoggedIn && !isLoading">
+                <p style="color: red;">{{ error }}</p>
+              </div>
+              <div *ngIf="!isLoggedIn && !isLoading">
+                <h2 style="text-align: center;">تسجيل الدخول</h2>
+                <form [formGroup]="signIn" (ngSubmit)="signInSubmit()">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <h2>البريد الإلكتروني</h2>
+                      <input
+                        type="email"
+                        formControlName="email"
+                        placeholder="البريد الإلكتروني"
+                        required
+                        email
+                      />
+                      <h2>كلمة المرور</h2>
+                      <input
+                        type="password"
+                        formControlName="password"
+                        placeholder="كلمة المرور"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <button
+                    class="btn_6"
+                    [disabled]="!signIn.valid"
+                    (click)="onActivate()"
+                    type="submit"
+                  >
+                    تسجيل الدخول
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </form>
+</div>

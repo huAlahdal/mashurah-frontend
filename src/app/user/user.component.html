@@ -1,0 +1,4 @@
+<app-header *ngIf="!isAdmin && !islawyer"></app-header>
+<router-outlet (activate)="onActivate()"></router-outlet>
+<app-footer *ngIf="!isAdmin && !islawyer"></app-footer>
+<!-- <app-chat-ui></app-chat-ui> -->

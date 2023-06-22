@@ -1,0 +1,89 @@
+<div id="p1" class="app_box app">
+  <div class="row">
+    <div class="col-md-6">
+      <h2>الجهة</h2>
+      <select [(ngModel)]="selectedOption" style="width: 100%;" name="country">
+        <option value= 1>فرد</option>
+        <option value= 2>شركة</option>
+      </select>
+    </div>
+    <div class="col-md-6">
+      <h2>الدولة</h2>
+      <select style="width: 100%;" name="country">
+        <option value="المملكة العربية السعودية">المملكة العربية السعودية</option>
+      </select>
+    </div>
+
+    <div class="col-md-3">
+      <a routerLink="consultation/{{ selectedOption }}">
+        <div class="sm_box br" style="width: 100%;">
+          <img src="assets/img/icons/comments.svg" />
+          <h1>الاستشارات القانونية</h1>
+        </div>
+      </a>
+    </div>
+
+    <div class="col-md-3">
+      <a routerLink="companies/{{ selectedOption }}"
+        ><div class="sm_box dr" style="width: 100%;">
+          <img src="assets/img/icons/building.svg" />
+          <h1>الشركات</h1>
+        </div></a
+      >
+    </div>
+
+    <div class="col-md-3">
+      <a routerLink="review/{{ selectedOption }}"
+        ><div class="sm_box br" style="width: 100%;">
+          <img src="assets/img/icons/contract.svg" />
+          <h1>إعداد ومراجعة العقود</h1>
+        </div></a
+      >
+    </div>
+
+    <div class="col-md-3">
+      <a routerLink="regulations/{{ selectedOption }}"
+        ><div class="sm_box dr" style="width: 100%;">
+          <img src="assets/img/icons/copy.svg" />
+          <h1>إعداد اللوائح والمذكرات</h1>
+        </div></a
+      >
+    </div>
+
+    <div class="col-md-3">
+      <a routerLink="property/{{ selectedOption }}">
+        <div class="sm_box dr" style="width: 100%;">
+          <img src="assets/img/icons/brain.svg" />
+          <h1>الملكية الفكرية</h1>
+        </div>
+      </a>
+    </div>
+
+    <div class="col-md-3">
+      <a routerLink="insurance/{{ selectedOption }}">
+        <div class="sm_box br" style="width: 100%;">
+          <img src="assets/img/icons/card.svg" />
+          <h1>التأمين</h1>
+        </div>
+      </a>
+    </div>
+
+    <div class="col-md-3">
+      <a routerLink="litigation/{{ selectedOption }}">
+        <div class="sm_box dr" style="width: 100%;">
+          <img src="assets/img/icons/gavel.svg" />
+          <h1>التقاضي</h1>
+        </div>
+      </a>
+    </div>
+
+    <div class="col-md-3">
+      <a routerLink="translation/{{ selectedOption }}">
+        <div class="sm_box br" style="width: 100%;">
+          <img src="assets/img/icons/globe.svg" />
+          <h1>الترجمة القانونية</h1>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>

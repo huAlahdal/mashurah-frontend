@@ -1,0 +1,94 @@
+<div id="p1" class="app_box app">
+    <div class="row">
+        <div class="col-md-6">
+            <h2>الاستشارات القانونية</h2>
+            <select [(ngModel)] = 'serviceType' style="width: 100%;" (change)="selectedServ($event.target.value)">
+                <option value=1>إدارية</option>
+                <option value=2>جنائية</option>
+                <option value=3>الأحوال الشخصية</option>
+                <option value=4>عمالية</option>
+                <option value=5>تجارية</option>
+                <option value=6>مدنية</option>
+                <option value=7>مالية</option>
+            </select>
+            <div [(ngSwitch)] = 'serviceType'>
+                <select *ngSwitchCase="1" [(ngModel)] = 'service' style="width: 100%;">
+
+                    <option value=1>دعوى إلغاء قرار اداري</option>
+                    <option value=2>دعوى العقود الادارية</option>
+                    <option value=3>تعويض عن قرار إداري</option>
+                    <option value=4>دعوى تأديبية</option>
+                    <option value=36>أخرى</option>
+                </select>
+
+                <select *ngSwitchCase="2" [(ngModel)] = 'service' style="width: 100%;">
+                    <option value=5>قتل</option>
+                    <option value=6>إعتداء</option>
+                    <option value=7>الأحوال تحرش</option>
+                    <option value=8>قذف وسب وشتم</option>
+                    <option value=9>مخدرات</option>
+                    <option value=10>سرقة</option>
+                    <option value=11>سحر</option>
+                    <option value=12>انتحال شخصية</option>
+                    <option value=13>جرائم معلوماتية</option>
+                    <option value=36>أخرى</option>
+                </select>
+
+                <select *ngSwitchCase="3" [(ngModel)] = 'service' style="width: 100%;">
+                    <option value=14>مواريث</option>
+                    <option value=15>نفقة</option>
+                    <option value=16>حضانة</option>
+                    <option value=17>ولاية</option>
+                    <option value=36>أخرى</option>
+                </select>
+
+                <select *ngSwitchCase="4" [(ngModel)] = 'service' style="width: 100%;">
+                    <option value=18>خلافات عمالية</option>
+                    <option value=19>تعويض عن إصابات العمل</option>
+                    <option value=20>فصل تعسفي</option>
+                    <option value=21>مستحقات مالية</option>
+                    <option value=36>أخرى</option>
+                </select>
+
+                <select *ngSwitchCase="5" [(ngModel)] = 'service' style="width: 100%;">
+                    <option value=22>منازعات تجارية</option>
+                    <option value=23>الشركات والشركاء</option>
+                    <option value=24>الآوراق التجارية</option>
+                    <option value=25>علامات تجارية</option>
+                    <option value=26>وكالات تجارية</option>
+                    <option value=36>أخرى</option>
+                </select>
+
+                <select *ngSwitchCase="6" [(ngModel)] = 'service' style="width: 100%;">
+                    <option value=27>مطالبة مالية</option>
+                    <option value=28>بيوع</option>
+                    <option value=29>كفالة</option>
+                    <option value=30>وكالة</option>
+                    <option value=31>اجارة</option>
+                    <option value=32>مقاولة</option>
+                    <option value=36>أخرى</option>
+                </select>
+
+                <select *ngSwitchCase="7" [(ngModel)] = 'service' style="width: 100%;">
+
+                    <option value=33>منازعات مصرفية</option>
+                    <option value=34>تمويل مصرفي</option>
+                    <option value=35>تزوير وأختلاس</option>
+                    <option value=37>أخرى</option>
+                </select>
+            </div>
+            <h2>نوع الاستشارة</h2>
+            <select [(ngModel)] = 'consType' style="width: 100%;" name="service_type">
+              <option [value]="arr.value" *ngFor = "let arr of array; let i = index">{{array[i].type}}</option>
+            </select>
+            <h2>الخدمة</h2>
+            <select [(ngModel)] = 'urgent' style="width: 100%;">
+              <option value=1>عادية</option>
+              <option value=2>مستعجلة</option>
+            </select>
+        </div>
+    </div>
+    <a class="btn_3" (click) = 'backClicked()' >السابق</a>
+    <div class="divider"></div>
+    <a class="btn_6" (click)='addData(consType)' routerLink = '/services/summery'>التالي</a>
+</div>

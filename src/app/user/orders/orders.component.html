@@ -1,0 +1,432 @@
+<ngx-spinner></ngx-spinner>
+<div id="myRequests" class="page">
+  <section class="about_us">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <h1 style="padding-bottom: 8px;">طلباتي</h1>
+          <div id="no_reqs" style="display: none; text-align: center;">
+            <div class="row">
+              <div class="col-md-12">
+                <!--img src="/img/no_reqs.svg"-->
+                <h2 style="color: #14cab4; font-size: 24px;">
+                  لا توجد لديك اي طلبات حتى الان
+                </h2>
+              </div>
+              <div class="col-md-12">
+                <a class="btn_3">ابدأ الآن</a>
+              </div>
+            </div>
+          </div>
+          <input
+            type="text"
+            style="padding:8px;margin:15px auto;width:30%;"
+            class="form-control"
+            placeholder="بحث..."
+            (keyup)="updateFilter($event)"
+          />
+          <ngx-datatable
+            #table
+            class="material"
+            [columnMode]="ColumnMode.force"
+            [headerHeight]="50"
+            [footerHeight]="50"
+            rowHeight="auto"
+            [limit]="10"
+            [rows]="rows"
+            [sorts]="[{ prop: 'id', dir: 'desc' }]"
+          >
+            <ngx-datatable-column
+              *ngIf="!onphone"
+              name="الرقم المرجعي"
+              prop="id"
+            ></ngx-datatable-column>
+            <ngx-datatable-column name="الحالة" prop="statusId">
+              <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
+                <span (click)="sort()" aria-label="Name">{{ column.name }}</span>
+              </ng-template>
+              <ng-template ngx-datatable-cell-template let-value="value">
+                <span
+                  [attr.aria-label]="value"
+                  *ngIf="value === 1"
+                  class="badge badge-primary"
+                  style="font-size:15px;"
+                  >طلب جديد</span
+                >
+                <span
+                  [attr.aria-label]="value"
+                  *ngIf="value === 2"
+                  class="badge badge-warning"
+                  style="font-size:15px; color: #000;"
+                  >تحت المراجعة</span
+                >
+                <span
+                  [attr.aria-label]="value"
+                  *ngIf="value === 3"
+                  class="badge"
+                  style="font-size:15px; color: #000; background-color: #5ee6d3;"
+                  >تم تعيين محامي</span
+                >
+                <span
+                  [attr.aria-label]="value"
+                  *ngIf="value === 4"
+                  class="badge"
+                  style="font-size:15px; color: #000; background-color: #5bb34d;"
+                  >مناقشة الطلب مع العميل</span
+                >
+                <span
+                  [attr.aria-label]="value"
+                  *ngIf="value === 5"
+                  class="badge"
+                  style="font-size:15px; color: #fff; background-color: #03360c;"
+                  >انتظار موافقة العميل</span
+                >
+                <span
+                  [attr.aria-label]="value"
+                  *ngIf="value === 6"
+                  class="badge badge badge-primary"
+                  style="font-size:15px; color: rgb(255, 255, 255); background-color: #bb6363;"
+                  >تمة موافقة العميل</span
+                >
+                <span
+                  [attr.aria-label]="value"
+                  *ngIf="value === 7"
+                  class="badge badge-warning"
+                  style="font-size:15px; color: #000; background-color: #31ce46;"
+                  >تم الدفع</span
+                >
+                <span
+                  [attr.aria-label]="value"
+                  *ngIf="value === 8"
+                  class="badge"
+                  style="font-size:15px; color: #000; background-color: #4bb6a8;"
+                  >تم التسليم</span
+                >
+                <span
+                  [attr.aria-label]="value"
+                  *ngIf="value === 9"
+                  class="badge"
+                  style="font-size:15px; color: rgb(255, 255, 255); background-color: #af1a1a;"
+                  >إلغاء قبل الدفع</span
+                >
+                <span
+                  [attr.aria-label]="value"
+                  *ngIf="value === 10"
+                  class="badge"
+                  style="font-size:15px; color: #fff; background-color: #6d1313;"
+                  >إلغاء بعد الدفع</span
+                >
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="الخدمة" prop="mainservice"></ngx-datatable-column>
+            <ngx-datatable-column
+              *ngIf="!onphone"
+              [sortable]="true"
+              name="التاريخ"
+              prop="createdAt"
+            >
+              <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
+                <span (click)="sort()" aria-label="Name">{{ column.name }}</span>
+              </ng-template>
+              <ng-template let-value="value" ngx-datatable-cell-template>
+                <span [attr.aria-label]="value">{{ value | date }}</span>
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column *ngIf="!onphone" name="المبلغ" prop="">
+              <ng-template
+                ngx-datatable-cell-template
+                let-rowIndex="rowIndex"
+                let-value="value"
+                let-row="row"
+                let-group="group"
+                >{{
+                  value.pricePerHour * value.numberOfHours * 0.15 +
+                    value.pricePerHour * value.numberOfHours
+                }}
+                ريال
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="التفاصيل" prop="">
+              <ng-template
+                ngx-datatable-cell-template
+                let-rowIndex="rowIndex"
+                let-value="value"
+                let-row="row"
+                let-group="group"
+              >
+                <button type="button" class="btn btn-primary" (click)="openModal(information)">
+                  التفاصيل
+                </button>
+                <ng-template #information>
+                  <div class="modal-header">
+                    <h3 style="text-align: center;">الرقم المرجعي : {{ value.id }}</h3>
+                    <button
+                      type="button"
+                      class="close pull-right"
+                      aria-label="Close"
+                      (click)="closeModal()"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="container">
+                          <div style="text-align: right; margin-bottom: 15px;">
+                            <h3>معلومات الخدمة</h3>
+                          </div>
+                        </div>
+                        <table
+                          class="table table-hover mb-0"
+                          id="user_Table_Res"
+                          style="direction: rtl; text-align: right; font-size: 10px; padding: 0.15rem;"
+                        >
+                          <tbody>
+                            <tr>
+                              <td>التاريخ :</td>
+                              <td>{{ value.createdAt | date }}</td>
+                            </tr>
+                            <tr>
+                              <td>الدولة :</td>
+                              <td>المملكة العربية السعودية</td>
+                            </tr>
+                            <tr>
+                              <td>الخدمة :</td>
+                              <td>{{ value.mainservice }}</td>
+                            </tr>
+                            <tr>
+                              <td>الخدمة الفرعية :</td>
+                              <td>{{ value.service }}</td>
+                            </tr>
+                            <tr>
+                              <td>النوع :</td>
+                              <td>{{ value.type }}</td>
+                            </tr>
+                            <tr>
+                              <td>السرعة :</td>
+                              <td>{{ value.urgent }}</td>
+                            </tr>
+                            <tr>
+                              <td>اسم المحامي :</td>
+                              <td>{{ value.serviceProviderName }}</td>
+                            </tr>
+                            <tr>
+                              <td>بريد المحامي :</td>
+                              <td>{{ value.serviceProviderEmail }}</td>
+                            </tr>
+                            <tr>
+                              <td>رقم المحامي :</td>
+                              <td>
+                                <span>{{ value.serviceProviderMobile }}</span>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <hr />
+                        <div style="text-align: right; margin-bottom: 15px;">
+                          <h3>تحديد المبلغ</h3>
+                        </div>
+                        <table
+                          class="table table-hover mb-0"
+                          id="user_Table_Res"
+                          style="direction: rtl; text-align: right; font-size: 10px; padding: 0.15rem;"
+                        >
+                          <tbody>
+                            <tr>
+                              <td>السعر :</td>
+                              <td>{{ value.pricePerHour }}</td>
+                            </tr>
+                            <tr>
+                              <td>المدة / عدد 300 كلمة :</td>
+                              <td>{{ value.numberOfHours }}</td>
+                            </tr>
+                            <tr>
+                              <td>المبلغ :</td>
+                              <td>{{ value.pricePerHour * value.numberOfHours }}</td>
+                            </tr>
+                            <tr>
+                              <td>ضريبة القيمة المضافة :</td>
+                              <td>0.15%</td>
+                            </tr>
+                            <tr>
+                              <td>المبلغ الاجمالي :</td>
+                              <td>
+                                {{
+                                  value.pricePerHour * value.numberOfHours * 0.15 +
+                                    value.pricePerHour * value.numberOfHours
+                                }}
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div class="col-md-6 ">
+                        <div class="container">
+                          <div style="text-align: right;">
+                            <h3>وصف المشكلة</h3>
+                          </div>
+                          <textarea disabled style="width: 100%; height: 100px;">{{
+                            value.description
+                          }}</textarea>
+                        </div>
+                        <hr />
+                        <div class="container">
+                          <div style="text-align: right;">
+                            <h3>الملفات</h3>
+                            <!-- <p>{{value.files[0]}}</p> -->
+                            <div class="row">
+                              <a
+                                *ngFor="let link of value.files"
+                                href="{{ link }}"
+                                target="_blank"
+                                download
+                                ><i
+                                  class="fa fa-download"
+                                  style="color: #14ad9b; font-size:30px; margin: 5px 10px;"
+                                ></i
+                              ></a>
+                            </div>
+                            <h3>ملفات التسليم</h3>
+                              <div class="row">
+                                <a
+                                  *ngFor="let link of value.completeFiles"
+                                  href="{{ link }}"
+                                  target="_blank"
+                                  download
+                                  ><i
+                                    class="fa fa-download"
+                                    style="color: #14ad9b; font-size:30px; margin: 5px 10px;"
+                                  ></i
+                                ></a>
+                              </div>
+                          </div>
+                        </div>
+                        <hr />
+                        <div
+                          *ngIf="value.statusId === 5"
+                          class="container"
+                          style="text-align: center;"
+                        >
+                          <div style="text-align: right;">
+                            <h4 style="color: black;">
+                              الإجراء التالي : الموافقة على عدد الساعات
+                            </h4>
+                            <p>
+                              لقد وافق المحامي الخاص بك على تحديد عدد الساعات. وبعد المناقشة بينك
+                              وبين المحامي تم تحديد عدد {{ value.numberOfHours }} ساعات.<br />
+                              الرجاء الضغط على زر الموافقة او الغاء الطلب
+                            </p>
+                          </div>
+                        </div>
+                        <div *ngIf="value.statusId === 6" class="container">
+                          <div style="text-align: right;">
+                            <h4 style="color: black;">
+                              الإجراء التالي : عملية الدفع
+                            </h4>
+                            <p>
+                              الرجاء القيام بالدفع عن طريق الضغط على زر "ادفع" وتتبع الخطوات اللازمة
+                              لإتمام عملية الدفع
+                            </p>
+                          </div>
+                        </div>
+
+                        <div *ngIf="value.statusId === 8" class="container">
+                          <div style="text-align: right;">
+                            <p>
+                              تم تسليم الطلب.
+                            </p>
+                          </div>
+                        </div>
+                        <hr />
+                        <div
+                          *ngIf="value.statusId < 8"
+                          class="container"
+                          style="text-align: center;"
+                        >
+                          <div style="text-align: right;">
+                            <h4 style="color: black;">إلغاء الطلب</h4>
+                            <p>
+                              يمكنك الغاء الطلب في حال وجود مشاكل في الخدمة او عدم تمكنك من التواصل
+                              مع المحامي
+                            </p>
+                          </div>
+                        </div>
+
+                        <div
+                          *ngIf="value.statusId > 8"
+                          class="container"
+                          style="text-align: center;"
+                        >
+                          <div style="text-align: right;">
+                            <h4 style="color: black;">تم الغاء الطلب</h4>
+                            <p>
+                              اذا لم تقم بالغاء الطلب قم بالتواصل مع محاميك لمعرفة سبب الإلغاء
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div style="text-align: center;">
+                      <hr />
+                      <button
+                        *ngIf="value.statusId === 5"
+                        style="margin: 13px 10px;"
+                        type="button"
+                        class="btn_6"
+                        (click)="changeStatus(value.statusId, value.id)"
+                      >
+                        موافق
+                      </button>
+                      <button
+                        *ngIf="value.statusId < 8"
+                        style="margin: 13px 10px;"
+                        type="button"
+                        class="btn_6"
+                        (click)="CancelOrder(value.id)"
+                      >
+                        إلغاء الطلب
+                      </button>
+                      <button
+                        *ngIf="value.statusId == 6"
+                        style="margin: 13px 10px;"
+                        type="button"
+                        class="btn_6"
+                        (click)="paymentSessionID(value.id)"
+                      >
+                        ادفع
+                      </button>
+                      <button
+                        style="margin: 13px 10px;"
+                        type="button"
+                        class="btn_6"
+                        (click)="closeModal()"
+                      >
+                        إغلاق
+                      </button>
+                    </div>
+                  </div>
+                </ng-template>
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column *ngIf="!onphone" name="ادفع" prop="">
+              <ng-template let-value="value" ngx-datatable-cell-template>
+                <button
+                  [disabled]="value.statusId != 6"
+                  type="button"
+                  class="btn btn-primary"
+                  style="padding: 6px 20px"
+                  (click)="paymentSessionID(value.id)"
+                >
+                  ادفع
+                </button>
+              </ng-template>
+            </ngx-datatable-column>
+          </ngx-datatable>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

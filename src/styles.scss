@@ -1,0 +1,70 @@
+/* You can add global styles to this file, and also import other style files */
+// @import './../projects/ng-uikit-pro-standard/src/lib/assets/scss/core/colors';
+// @import './../projects/ng-uikit-pro-standard/src/lib/assets/scss/core/variables';
+// @import './../projects/ng-uikit-pro-standard/src/lib/assets/scss/core/variables-pro';
+
+// @import './../projects/ng-uikit-pro-standard/src/lib/assets/scss/sections-pro/_contacts-pro.scss';
+// @import './../projects/ng-uikit-pro-standard/src/lib/assets/scss/sections-pro/_magazine-pro.scss';
+// @import './../projects/ng-uikit-pro-standard/src/lib/assets/scss/sections-pro/_pricing-pro.scss';
+// @import './../projects/ng-uikit-pro-standard/src/lib/assets/scss/sections-pro/_social-pro.scss';
+// @import './../projects/ng-uikit-pro-standard/src/lib/assets/scss/sections-pro/_team-pro.scss';
+// @import './../projects/ng-uikit-pro-standard/src/lib/assets/scss/sections-pro/_templates-pro.scss';
+// @import './../projects/ng-uikit-pro-standard/src/lib/assets/scss/sections-pro/_testimonials-pro.scss';
+// @import './../projects/ng-uikit-pro-standard/src/lib/assets/scss/addons-pro/_blog-pro.scss';
+// @import './../projects/ng-uikit-pro-standard/src/lib/assets/scss/addons-pro/_chat-pro.scss';
+// @import './../projects/ng-uikit-pro-standard/src/lib/assets/scss/addons-pro/_ecommerce-pro.scss';
+// @import './../projects/ng-uikit-pro-standard/src/lib/assets/scss/addons-pro/_steppers-pro.scss';
+// @import './../projects/ng-uikit-pro-standard/src/lib/assets/scss/addons-pro/_timeline-pro.scss';
+// @import './../projects/ng-uikit-pro-standard/src/lib/assets/scss/addons-pro/_timelines-pro.scss';
+
+// @import '~ng-uikit-pro-standard/assets/scss/addons-pro/_chat-pro.scss';
+
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Cairo&display=swap&subset=arabic');
+
+* {
+  font-family: 'Cairo', sans-serif;
+}
+
+a {
+  cursor: pointer;
+}
+
+html,
+body {
+  margin: 0;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+  overflow: auto;
+  overflow-x: hidden;
+  width: auto;
+  height: 100%;
+}
+
+.clearfix {
+  zoom: 1;
+}
+.clearfix::after {
+  content: '.';
+  clear: both;
+  display: block;
+  height: 0;
+  visibility: hidden;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(155, 155, 156) rgb(255, 255, 255);
+}
+
+/* Works on Chrome/Edge/Safari */
+*::-webkit-scrollbar {
+  width: 10px;
+}
+*::-webkit-scrollbar-track {
+  background: rgb(255, 255, 255);
+}
+*::-webkit-scrollbar-thumb {
+  background-color: rgb(162, 162, 170);
+  border-radius: 20px;
+  border: 3px solid rgba(255, 255, 255, 0);
+}
